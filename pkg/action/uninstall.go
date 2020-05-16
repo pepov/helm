@@ -21,6 +21,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	k8serrors "k8s.io/apimachinery/pkg/util/errors"
 
 	"helm.sh/helm/v3/pkg/release"
 	"helm.sh/helm/v3/pkg/releaseutil"
@@ -196,7 +197,12 @@ func (u *Uninstall) deleteRelease(rel *release.Release) (string, []error) {
 	}
 	resources, err := u.cfg.KubeClient.Build(strings.NewReader(builder.String()), false)
 	if err != nil {
-		return "", []error{errors.Wrap(err, "unable to build kubernetes objects for delete")}
+		remainingErr := k8serrors.FilterOut(err, func(err error) bool {
+			return strings.Contains(err.Error(), "no matches for kind")
+		})
+		if remainingErr != nil {
+			return "", []error{errors.Wrap(remainingErr, "unable to build kubernetes objects for delete")}
+		}
 	}
 
 	_, errs := u.cfg.KubeClient.Delete(resources)
