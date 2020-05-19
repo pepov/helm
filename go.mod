@@ -8,6 +8,7 @@ require (
 	github.com/Masterminds/sprig/v3 v3.0.2
 	github.com/Masterminds/vcs v1.13.1
 	github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496
+	github.com/banzaicloud/k8s-objectmatcher v1.3.2 // indirect
 	github.com/containerd/containerd v1.3.2
 	github.com/cyphar/filepath-securejoin v0.2.2
 	github.com/deislabs/oras v0.8.1
@@ -28,12 +29,12 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.4.0
 	github.com/xeipuuv/gojsonschema v1.1.0
-	golang.org/x/crypto v0.0.0-20200128174031-69ecbb4d6d5d
-	k8s.io/api v0.17.2
-	k8s.io/apiextensions-apiserver v0.17.2
-	k8s.io/apimachinery v0.17.2
+	golang.org/x/crypto v0.0.0-20200220183623-bac4c82f6975
+	k8s.io/api v0.17.4
+	k8s.io/apiextensions-apiserver v0.17.4
+	k8s.io/apimachinery v0.17.4
 	k8s.io/cli-runtime v0.17.2
-	k8s.io/client-go v0.17.2
+	k8s.io/client-go v0.17.4
 	k8s.io/klog v1.0.0
 	k8s.io/kubectl v0.17.2
 	sigs.k8s.io/yaml v1.1.0

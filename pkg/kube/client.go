@@ -25,6 +25,7 @@ import (
 	"sync"
 	"time"
 
+	banzaipatch "github.com/banzaicloud/k8s-objectmatcher/patch"
 	jsonpatch "github.com/evanphx/json-patch"
 	"github.com/pkg/errors"
 	batch "k8s.io/api/batch/v1"
@@ -342,9 +343,20 @@ func createPatch(target *resource.Info, current runtime.Object) ([]byte, types.P
 	if err != nil {
 		return nil, types.StrategicMergePatchType, errors.Wrap(err, "serializing current configuration")
 	}
+
+	oldData, _, err = banzaipatch.DeleteNullInJson(oldData)
+	if err != nil {
+		return nil, types.StrategicMergePatchType, errors.Wrap(err, "deleting null values from current configuration")
+	}
+
 	newData, err := json.Marshal(target.Object)
 	if err != nil {
 		return nil, types.StrategicMergePatchType, errors.Wrap(err, "serializing target configuration")
+	}
+
+	newData, _, err = banzaipatch.DeleteNullInJson(newData)
+	if err != nil {
+		return nil, types.StrategicMergePatchType, errors.Wrap(err, "deleting null values from target configuration")
 	}
 
 	// Fetch the current object for the three way merge
